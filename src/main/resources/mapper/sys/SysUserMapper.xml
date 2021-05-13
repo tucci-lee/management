@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tucci.management.model.dao.sys.SysUserMapper">
+    <resultMap id="BaseResultMap" type="cn.tucci.management.model.domain.sys.SysUser">
+        <id column="uid" property="uid" jdbcType="BIGINT"/>
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="is_lock" property="isLock" jdbcType="BIT" />
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="dept_id" property="deptId" jdbcType="BIGINT"/>
+        <result column="creator" property="creator" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="updater" property="updater" jdbcType="BIGINT"/>
+        <result column="updated_time" property="updatedTime" jdbcType="BIGINT"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    uid, account, password, phone, email, is_lock, nickname,
+    remarks, dept_id, creator, create_time, updater, updated_time, is_deleted
+  </sql>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT
+        uid, account, phone, email, is_lock, nickname,
+        remarks, dept_id, creator, create_time
+        FROM
+        sys_user
+        WHERE
+        is_deleted = FALSE
+        <if test="query.account != null and query.account != ''">
+            AND account = #{query.account}
+        </if>
+        <if test="query.phone != null and query.phone != ''">
+            AND phone = #{query.phone}
+        </if>
+        <if test="query.isLock != null">
+            AND is_lock = #{query.isLock}
+        </if>
+        <if test="query.deptId != null">
+            AND dept_id = #{query.deptId}
+        </if>
+    </select>
+</mapper>

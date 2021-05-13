@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tucci.management.model.dao.sys.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="cn.tucci.management.model.domain.sys.SysRole">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="role_char" property="roleChar" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="updater" property="updater" jdbcType="BIGINT"/>
+        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, role_char, name, remarks, creator, create_time, updater, update_time, is_deleted
+  </sql>
+
+    <select id="listRoleCharByUid" parameterType="long" resultType="string">
+SELECT
+	s1.role_char
+FROM
+	sys_role s1,
+	sys_user_role s2,
+	sys_user s3
+WHERE
+	s1.id = s2.role_id
+	AND s2.uid = s3.uid
+	AND s3.is_deleted = FALSE
+	AND s3.is_lock = FALSE
+	AND s3.uid = #{uid}
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT
+        id, role_char, name, remarks, creator, create_time, updater, update_time
+        FROM
+        sys_role
+        WHERE
+        is_deleted = FALSE
+        <if test="query.name != null and query.name != ''">
+            AND `name` = #{query.name}
+        </if>
+    </select>
+    <select id="countUserById" parameterType="long" resultType="int">
+SELECT
+	count( 0 )
+FROM
+	sys_user s1,
+	sys_user_role s2
+WHERE
+	s1.is_deleted = FALSE
+	AND s1.uid = s2.uid
+	AND s2.role_id = #{id}
+    </select>
+
+    <select id="listIdByUid" parameterType="long" resultType="long">
+SELECT
+	s1.id
+FROM
+	sys_role s1,
+	sys_user_role s2
+WHERE
+	s1.is_deleted = FALSE
+	AND s2.role_id = s1.id
+	AND s2.uid = #{uid}
+    </select>
+</mapper>

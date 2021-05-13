@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tucci.management.model.dao.sys.SysResMapper">
+    <resultMap id="BaseResultMap" type="cn.tucci.management.model.domain.sys.SysRes">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="level" property="level" jdbcType="VARCHAR"/>
+        <result column="res_char" property="resChar" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="seq" property="seq" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="updater" property="updater" jdbcType="BIGINT"/>
+        <result column="updated_time" property="updatedTime" jdbcType="BIGINT"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, type, url, pid, level, res_char, icon, seq, creator, create_time, updater, 
+    updated_time, is_deleted
+  </sql>
+    <sql id="Show_Column_List">
+        s1.id, s1.`name`, s1.type, s1.url, s1.pid, s1.res_char, s1.icon, s1.seq, s1.create_time
+    </sql>
+
+    <select id="listResCharByUid" parameterType="long" resultType="string">
+SELECT DISTINCT
+	s1.res_char
+FROM
+	sys_res AS s1,
+	sys_user_role AS s2,
+	sys_role AS s3,
+	sys_role_res AS s4,
+	sys_user AS s5
+WHERE
+	s5.is_deleted = FALSE
+	AND s5.is_lock = FALSE
+	AND s5.uid = #{uid}
+	AND s5.uid = s2.uid
+	AND s2.role_id = s3.id
+	AND s4.role_id = s3.id
+	AND s4.res_id = s1.id
+	AND s1.res_char IS NOT NULL
+	AND s1.res_char &lt;&gt; ''
+    </select>
+
+    <select id="listMenuByUid" parameterType="long" resultMap="BaseResultMap">
+        SELECT DISTINCT
+        <include refid="Show_Column_List"/>
+        FROM
+        sys_res AS s1,
+        sys_role_res AS s2,
+        sys_user_role AS s3
+        WHERE
+        s1.id = s2.res_id
+        AND s2.role_id = s3.role_id
+        AND s3.uid = #{uid}
+        AND s1.type = 1
+    </select>
+    <select id="countRoleByResId" resultType="int">
+SELECT
+	count( 0 )
+FROM
+	sys_role s1,
+	sys_role_res s2
+WHERE
+	s1.is_deleted = FALSE
+	AND s1.id = s2.role_id
+	AND s2.res_id = #{id}
+    </select>
+
+    <select id="listIdByRoleId" parameterType="long" resultType="long">
+SELECT
+	s1.id
+FROM
+	sys_res s1,
+	sys_role_res s2
+WHERE
+	s1.is_deleted = FALSE
+	AND s1.id = s2.res_id
+	AND s2.role_id = #{roleId}
+    </select>
+</mapper>
