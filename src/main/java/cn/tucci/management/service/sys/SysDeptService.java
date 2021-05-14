@@ -35,8 +35,8 @@ public interface SysDeptService {
     /**
      * 删除dept
      *
-     * @param id id
+     * @param dept SysDept
      * @return int
      */
-    int delete(Long id);
+    int delete(SysDept dept);
 }

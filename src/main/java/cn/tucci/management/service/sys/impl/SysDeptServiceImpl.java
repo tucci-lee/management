@@ -1,6 +1,5 @@
 package cn.tucci.management.service.sys.impl;
 
-import cn.tucci.management.core.constant.CacheConstant;
 import cn.tucci.management.core.util.Assert;
 import cn.tucci.management.model.dao.sys.SysDeptMapper;
 import cn.tucci.management.model.domain.sys.SysDept;
@@ -9,7 +8,6 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +29,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public List<SysDept> list() {
         Wrapper<SysDept> wrapper = new LambdaQueryWrapper<>(SysDept.class)
-                .eq(SysDept::getIsDeleted, false);
+                .eq(SysDept::getIsDeleted, Boolean.FALSE);
         return sysDeptMapper.selectList(wrapper);
     }
 
@@ -47,7 +45,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     public int edit(SysDept dept) {
         SysDept sysDept = sysDeptMapper.selectOne(new LambdaQueryWrapper<>(SysDept.class)
                 .select(field -> true)
-                .eq(SysDept::getIsDeleted, false)
+                .eq(SysDept::getIsDeleted, Boolean.FALSE)
                 .eq(SysDept::getId, dept.getId()));
         Assert.notNull(sysDept, "部门不存在");
 
@@ -60,7 +58,7 @@ public class SysDeptServiceImpl implements SysDeptService {
                 String newLevel = dept.getLevel() + "," + dept.getId();
                 Wrapper<SysDept> updateWrapper = new LambdaUpdateWrapper<>(SysDept.class)
                         .setSql("level = replace(`level`, '" + oldLevel + "', '" + newLevel + "')")
-                        .eq(SysDept::getIsDeleted, false)
+                        .eq(SysDept::getIsDeleted, Boolean.FALSE)
                         .likeRight(SysDept::getLevel, oldLevel);
                 sysDeptMapper.update(null, updateWrapper);
             }
@@ -70,19 +68,16 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public int delete(Long id) {
+    public int delete(SysDept dept) {
         // 判断部门是否有用户关联
-        int userCount = sysDeptMapper.countUserByDeptId(id);
+        int userCount = sysDeptMapper.countUserByDeptId(dept.getId());
         Assert.isTrue(userCount == 0, "当前部门有用户关联");
 
         // 判断部门是否有下级
-        int subDeptCount = sysDeptMapper.countSubDeptById(id);
+        int subDeptCount = sysDeptMapper.countSubDeptById(dept.getId());
         Assert.isTrue(subDeptCount == 0, "当前部门有下级部门");
 
         // 删除部门
-        SysDept dept = new SysDept()
-                .setId(id)
-                .setIsDeleted(true);
         return sysDeptMapper.updateById(dept);
     }
 
@@ -100,7 +95,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         }
         SysDept parentDept = sysDeptMapper.selectOne(new LambdaQueryWrapper<>(SysDept.class)
                 .select(field -> true)
-                .eq(SysDept::getIsDeleted, false)
+                .eq(SysDept::getIsDeleted, Boolean.FALSE)
                 .eq(SysDept::getId, dept.getPid()));
         Assert.notNull(parentDept, "父级不存在");
 

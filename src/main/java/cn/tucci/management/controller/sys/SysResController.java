@@ -80,8 +80,8 @@ public class SysResController {
     @RequiresPermissions(value = {"sys:res:add"})
     @PostMapping
     public Result add(@Validated @RequestBody ResAddBody body) {
-        SysRes res = new SysRes();
-        res.setCreator(ShiroUtil.getUid());
+        SysRes res = new SysRes()
+                .setCreator(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, res);
         sysResService.add(res);
         return Result.ok();
@@ -98,7 +98,8 @@ public class SysResController {
     @PutMapping
     public Result edit(@Validated @RequestBody ResEditBody body) {
         Assert.isTrue(!body.getId().equals(body.getPid()), "资源上级不能是当前资源");
-        SysRes res = new SysRes();
+        SysRes res = new SysRes()
+                .setUpdater(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, res);
         sysResService.edit(res);
         return Result.ok();
@@ -114,7 +115,11 @@ public class SysResController {
     @RequiresPermissions(value = {"sys:res:delete"}, logical = Logical.OR)
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Long id) {
-        sysResService.delete(id);
+        SysRes res = new SysRes()
+                .setId(id)
+                .setUpdater(ShiroUtil.getUid())
+                .setIsDeleted(Boolean.TRUE);
+        sysResService.delete(res);
         return Result.ok();
     }
 

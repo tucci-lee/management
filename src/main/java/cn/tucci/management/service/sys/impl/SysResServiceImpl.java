@@ -43,7 +43,7 @@ public class SysResServiceImpl implements SysResService {
     @Override
     public List<SysRes> list() {
         Wrapper<SysRes> wrapper = new LambdaQueryWrapper<>(SysRes.class)
-                .eq(SysRes::getIsDeleted, false);
+                .eq(SysRes::getIsDeleted, Boolean.FALSE);
 
         return sysResMapper.selectList(wrapper);
     }
@@ -51,7 +51,7 @@ public class SysResServiceImpl implements SysResService {
     @Override
     public List<SysRes> listMenus() {
         Wrapper<SysRes> wrapper = new LambdaQueryWrapper<>(SysRes.class)
-                .eq(SysRes::getIsDeleted, false)
+                .eq(SysRes::getIsDeleted, Boolean.FALSE)
                 .eq(SysRes::getType, SysRes.Type.MENU);
         return sysResMapper.selectList(wrapper);
     }
@@ -68,7 +68,7 @@ public class SysResServiceImpl implements SysResService {
     public int edit(SysRes res) {
         SysRes queryRes = sysResMapper.selectOne(new LambdaQueryWrapper<>(SysRes.class)
                 .select(field -> true)
-                .eq(SysRes::getIsDeleted, false)
+                .eq(SysRes::getIsDeleted, Boolean.FALSE)
                 .eq(SysRes::getId, res.getId()));
         Assert.notNull(queryRes, "资源不存在");
 
@@ -81,7 +81,7 @@ public class SysResServiceImpl implements SysResService {
                 String newLevel = res.getLevel() + "," + res.getId();
                 Wrapper<SysRes> updateWrapper = new LambdaUpdateWrapper<>(SysRes.class)
                         .setSql("level = replace(`level`, '" + oldLevel + "', '" + newLevel + "')")
-                        .eq(SysRes::getIsDeleted, false)
+                        .eq(SysRes::getIsDeleted, Boolean.FALSE)
                         .likeRight(SysRes::getLevel, oldLevel);
                 sysResMapper.update(null, updateWrapper);
             }
@@ -92,28 +92,25 @@ public class SysResServiceImpl implements SysResService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
-    public int delete(Long id) {
+    public int delete(SysRes res) {
         // 判断资源是否有角色关联
-        int roleCount = sysResMapper.countRoleByResId(id);
+        int roleCount = sysResMapper.countRoleByResId(res.getId());
         Assert.isTrue(roleCount == 0, "当前资源有角色关联");
 
         SysRes sysRes = sysResMapper.selectOne(new LambdaQueryWrapper<>(SysRes.class)
                 .select(field -> true)
-                .eq(SysRes::getIsDeleted, false)
-                .eq(SysRes::getId, id));
+                .eq(SysRes::getIsDeleted, Boolean.FALSE)
+                .eq(SysRes::getId, res.getId()));
 
         synchronized (this) {
             // 删除所有下级
             Wrapper<SysRes> updateWrapper = new LambdaUpdateWrapper<>(SysRes.class)
                     .set(SysRes::getIsDeleted, true)
-                    .eq(SysRes::getIsDeleted, false)
+                    .eq(SysRes::getIsDeleted, Boolean.FALSE)
                     .likeRight(SysRes::getLevel, sysRes.getLevel() + "," + sysRes.getId());
             sysResMapper.update(null, updateWrapper);
 
             // 删除资源
-            SysRes res = new SysRes()
-                    .setId(id)
-                    .setIsDeleted(true);
             return sysResMapper.updateById(res);
         }
     }
@@ -137,7 +134,7 @@ public class SysResServiceImpl implements SysResService {
         }
         SysRes parentRes = sysResMapper.selectOne(new LambdaQueryWrapper<>(SysRes.class)
                 .select(field -> true)
-                .eq(SysRes::getIsDeleted, false)
+                .eq(SysRes::getIsDeleted, Boolean.FALSE)
                 .eq(SysRes::getId, res.getPid()));
         Assert.notNull(parentRes, "父级不存在");
 

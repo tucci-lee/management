@@ -134,7 +134,7 @@ public class AuthController {
         Wrapper<SysUser> wrapper = new LambdaQueryWrapper<>(SysUser.class)
                 .select(field -> true)
                 .eq(SysUser::getUid, uid)
-                .eq(SysUser::getIsDeleted, false);
+                .eq(SysUser::getIsDeleted, Boolean.FALSE);
         SysUser user = sysUserService.getOne(wrapper);
         Assert.isTrue(BCrypt.checkpw(body.getOldPassword(), user.getPassword()), ResultStatus.PASSWORD_ERROR);
 

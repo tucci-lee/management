@@ -23,13 +23,11 @@ public class SysRole implements Serializable {
 
     private String remarks;
 
-    @TableField(fill = FieldFill.INSERT)
     private Long creator;
 
     @TableField(fill = FieldFill.INSERT)
     private Long createTime;
 
-    @TableField(fill = FieldFill.UPDATE)
     private Long updater;
 
     @TableField(fill = FieldFill.UPDATE)

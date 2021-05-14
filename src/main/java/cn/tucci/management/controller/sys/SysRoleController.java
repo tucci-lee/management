@@ -79,7 +79,8 @@ public class SysRoleController {
     @RequiresPermissions(value = {"sys:role:edit"})
     @PutMapping
     public Result edit(@Validated @RequestBody RoleEditBody body) {
-        SysRole role = new SysRole();
+        SysRole role = new SysRole()
+                .setUpdater(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, role);
         sysRoleService.edit(role);
         return Result.ok();
@@ -109,7 +110,11 @@ public class SysRoleController {
     @RequiresPermissions(value = {"sys:role:delete"})
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Long id) {
-        sysRoleService.delete(id);
+        SysRole role = new SysRole()
+                .setId(id)
+                .setUpdater(ShiroUtil.getUid())
+                .setIsDeleted(Boolean.TRUE);
+        sysRoleService.delete(role);
         return Result.ok();
     }
 

@@ -56,7 +56,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void add(SysRole role, List<Long> resIds) {
         Wrapper<SysRole> wrapper = new LambdaQueryWrapper<SysRole>()
-                .eq(SysRole::getIsDeleted, false)
+                .eq(SysRole::getIsDeleted, Boolean.FALSE)
                 .eq(SysRole::getName, role.getName());
         // 校验角色名称是否有相同的
         synchronized (this) {
@@ -73,7 +73,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         synchronized (this) {
             Wrapper<SysRole> wrapper = new LambdaQueryWrapper<SysRole>()
                     .eq(SysRole::getName, role.getName())
-                    .eq(SysRole::getIsDeleted, false);
+                    .eq(SysRole::getIsDeleted, Boolean.FALSE);
             SysRole sysRole = sysRoleMapper.selectOne(wrapper);
             Assert.isTrue(sysRole == null || sysRole.getId().equals(role.getId()), "角色名称重复");
             return sysRoleMapper.updateById(role);
@@ -96,20 +96,17 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public int delete(Long roleId) {
-        int userCount = sysRoleMapper.countUserById(roleId);
+    public int delete(SysRole role) {
+        int userCount = sysRoleMapper.countUserById(role.getId());
         Assert.isTrue(userCount == 0, "当前角色有用户关联");
 
-        SysRole role = new SysRole()
-                .setId(roleId)
-                .setIsDeleted(true);
         return sysRoleMapper.updateById(role);
     }
 
     @Override
     public List<SysRole> list() {
         Wrapper<SysRole> wrapper = new LambdaQueryWrapper<SysRole>()
-                .eq(SysRole::getIsDeleted, false);
+                .eq(SysRole::getIsDeleted, Boolean.FALSE);
         return sysRoleMapper.selectList(wrapper);
     }
 

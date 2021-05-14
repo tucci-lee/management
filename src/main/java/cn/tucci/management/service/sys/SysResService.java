@@ -57,10 +57,10 @@ public interface SysResService {
     /**
      * 根据id删除资源
      *
-     * @param id id
+     * @param res res
      * @return int
      */
-    int delete(Long id);
+    int delete(SysRes res);
 
     /**
      * 根据roleId查询关联的所有resId

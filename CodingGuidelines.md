@@ -12,6 +12,11 @@
     
 5. 不使用mybatis-plus的IService。
 
-6. domain使用mybatis-plus填充creator、createTime、updater、updatedTime
+6. domain使用mybatis-plus填充createTime、updatedTime
 
 7. 操作日志记录@Log只获取方法中的第一个参数，所以尽量将参数封装
+
+8. 定时任务：\
+    8.1 未实现启动就执行的定时任务（可以参考SchedulingConfig#startSysTaskListener实现）\
+    8.2 定时任务启动的存储在scheduledFutureMap中，启动状态不存储数据库，根据这个map判断 \
+    8.3 定时任务需要extends AbstractTask

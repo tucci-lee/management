@@ -5,16 +5,18 @@ import cn.tucci.management.core.response.PageResult;
 import cn.tucci.management.core.response.Result;
 import cn.tucci.management.core.util.BCrypt;
 import cn.tucci.management.core.util.RootUtil;
-import cn.tucci.management.model.body.UserAddBody;
 import cn.tucci.management.model.body.LockEditBody;
-import cn.tucci.management.model.body.UserPwdEditBody;
+import cn.tucci.management.model.body.UserAddBody;
 import cn.tucci.management.model.body.UserEditBody;
+import cn.tucci.management.model.body.UserPwdEditBody;
 import cn.tucci.management.model.body.UserRoleEditBody;
 import cn.tucci.management.model.domain.sys.SysUser;
 import cn.tucci.management.model.query.UserQuery;
 import cn.tucci.management.service.sys.SysUserService;
+import cn.tucci.management.shiro.util.ShiroUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +39,7 @@ public class SysUserController {
     private final SysUserService sysUserService;
 
     @Autowired
-    public SysUserController(SysUserService sysUserService) {
+    public SysUserController(SysUserService sysUserService, SessionDAO sessionDAO) {
         this.sysUserService = sysUserService;
     }
 
@@ -64,7 +66,8 @@ public class SysUserController {
     @RequiresPermissions(value = {"sys:user:add"})
     @PostMapping
     public Result add(@Validated @RequestBody UserAddBody body) {
-        SysUser user = new SysUser();
+        SysUser user = new SysUser()
+                .setCreator(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, user);
 
         // 账号设置为全小写
@@ -88,7 +91,8 @@ public class SysUserController {
     public Result edit(@Validated @RequestBody UserEditBody body) {
         RootUtil.isRoot(body.getUid());
 
-        SysUser user = new SysUser();
+        SysUser user = new SysUser()
+                .setUpdater(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, user);
 
         sysUserService.updateByUid(user);
@@ -107,7 +111,8 @@ public class SysUserController {
     public Result editLock(@Validated @RequestBody LockEditBody body) {
         RootUtil.notEditRoot(body.getUid());
 
-        SysUser user = new SysUser();
+        SysUser user = new SysUser()
+                .setUpdater(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, user);
         sysUserService.updateByUid(user);
         return Result.ok();
@@ -127,6 +132,7 @@ public class SysUserController {
 
         SysUser user = new SysUser()
                 .setUid(body.getUid())
+                .setUpdater(ShiroUtil.getUid())
                 .setPassword(BCrypt.hashpw(body.getPassword(), BCrypt.gensalt()));
         sysUserService.updateByUid(user);
         return Result.ok();
@@ -161,7 +167,8 @@ public class SysUserController {
 
         SysUser user = new SysUser()
                 .setUid(uid)
-                .setIsDeleted(true);
+                .setUpdater(ShiroUtil.getUid())
+                .setIsDeleted(Boolean.TRUE);
         sysUserService.updateByUid(user);
         return Result.ok();
     }

@@ -57,8 +57,8 @@ public class SysDeptController {
     @RequiresPermissions(value = {"sys:dept:add"})
     @PostMapping
     public Result add(@Validated @RequestBody DeptAddBody body) {
-        SysDept dept = new SysDept();
-        dept.setCreator(ShiroUtil.getUid());
+        SysDept dept = new SysDept()
+                .setCreator(ShiroUtil.getUid());
         BeanUtils.copyProperties(body, dept);
         sysDeptService.add(dept);
         return Result.ok();
@@ -76,7 +76,9 @@ public class SysDeptController {
     public Result edit(@Validated @RequestBody DeptEditBody body) {
         Assert.isTrue(!body.getId().equals(body.getPid()), "部门上级不能是当前部门");
 
-        SysDept dept = new SysDept();
+        SysDept dept = new SysDept()
+                .setUpdater(ShiroUtil.getUid());
+
         BeanUtils.copyProperties(body, dept);
         sysDeptService.edit(dept);
         return Result.ok();
@@ -92,7 +94,11 @@ public class SysDeptController {
     @RequiresPermissions(value = {"sys:dept:delete"})
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Long id) {
-        sysDeptService.delete(id);
+        SysDept dept = new SysDept()
+                .setId(id)
+                .setUpdater(ShiroUtil.getUid())
+                .setIsDeleted(Boolean.TRUE);
+        sysDeptService.delete(dept);
         return Result.ok();
     }
 }

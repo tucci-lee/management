@@ -75,7 +75,7 @@ public class AccountRealm extends AuthorizingRealm {
         Wrapper<SysUser> wrapper = new LambdaQueryWrapper<>(SysUser.class)
                 .select(field -> true)
                 .eq(SysUser::getAccount, token.getPrincipal())
-                .eq(SysUser::getIsDeleted, false);
+                .eq(SysUser::getIsDeleted, Boolean.FALSE);
 
         SysUser user = userService.getOne(wrapper);;
         if (user == null) {

@@ -1,7 +1,6 @@
 package cn.tucci.management.config;
 
 import cn.tucci.management.core.util.SnowFlake;
-import cn.tucci.management.shiro.util.ShiroUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
@@ -62,17 +61,11 @@ public class MybatisPlusConfig {
         return new MetaObjectHandler() {
             @Override
             public void insertFill(MetaObject metaObject) {
-                try {
-                    this.strictInsertFill(metaObject, "creator", Long.class, ShiroUtil.getUid());
-                }catch (RuntimeException e){
-                    // do nothing
-                }
                 this.strictInsertFill(metaObject, "createTime", Long.class, System.currentTimeMillis());
             }
 
             @Override
             public void updateFill(MetaObject metaObject) {
-                this.strictUpdateFill(metaObject, "updater", Long.class, ShiroUtil.getUid());
                 this.strictUpdateFill(metaObject, "updatedTime", Long.class, System.currentTimeMillis()); // 起始版本 3.3.0(推荐)
             }
 

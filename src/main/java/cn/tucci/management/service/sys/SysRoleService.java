@@ -53,10 +53,10 @@ public interface SysRoleService {
     /**
      * 根据roleId删除
      *
-     * @param id roleId
+     * @param role role
      * @return int
      */
-    int delete(Long id);
+    int delete(SysRole role);
 
     /**
      * 查询所有的role
