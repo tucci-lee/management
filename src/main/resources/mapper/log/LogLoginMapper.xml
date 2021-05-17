@@ -19,7 +19,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     FROM
-    sys_login_log
+    log_login
     <where>
       <if test="query.account != null and query.account != ''">
         account = #{query.account}

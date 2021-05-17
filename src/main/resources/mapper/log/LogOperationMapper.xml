@@ -24,7 +24,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     FROM
-    sys_operation_log
+    log_operation
     <where>
       <if test="query.account != null and query.account != ''">
         account = #{query.account}
