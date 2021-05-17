@@ -1,4 +1,4 @@
-package cn.tucci.management.model.domain.sys;
+package cn.tucci.management.model.domain.task;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -12,29 +12,21 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-@TableName("sys_role")
-public class SysRole implements Serializable {
+@TableName("task_start_log")
+public class TaskStartLog implements Serializable {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
-    private String roleChar;
+    private Long taskScheduleId;
 
-    private String name;
+    private Boolean status;
 
-    private String remarks;
+    private String msg;
 
     private Long creator;
 
     @TableField(fill = FieldFill.INSERT)
     private Long createTime;
 
-    private Long updater;
-
-    @TableField(fill = FieldFill.UPDATE)
-    private Long updatedTime;
-
-    @TableField(select = false)
-    private Boolean isDeleted;
-
-    private static final long serialVersionUID = -8720782996386219648L;
+    private static final long serialVersionUID = 3066743231322638960L;
 }

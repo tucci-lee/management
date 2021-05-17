@@ -45,5 +45,5 @@
         <appender-ref ref="info"/>
         <appender-ref ref="err"/>
     </root>
-    <logger name="cn.tucci" level="INFO"/>
+    <logger name="cn.tucci" level="DEBUG"/>
 </configuration>

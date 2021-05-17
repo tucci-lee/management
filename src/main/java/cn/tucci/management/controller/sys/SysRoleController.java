@@ -7,7 +7,7 @@ import cn.tucci.management.model.body.RoleAddBody;
 import cn.tucci.management.model.body.RoleEditBody;
 import cn.tucci.management.model.body.RoleResEditBody;
 import cn.tucci.management.model.domain.sys.SysRole;
-import cn.tucci.management.model.query.RoleQuery;
+import cn.tucci.management.model.query.SysRoleQuery;
 import cn.tucci.management.service.sys.SysRoleService;
 import cn.tucci.management.shiro.util.ShiroUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -46,7 +46,7 @@ public class SysRoleController {
      */
     @RequiresPermissions(value = {"sys:role:list"})
     @GetMapping
-    public Result list(@Validated RoleQuery query) {
+    public Result list(@Validated SysRoleQuery query) {
         Page<SysRole> rolePage = sysRoleService.list(query);
         return PageResult.ok(rolePage.getRecords(), rolePage.getTotal());
     }

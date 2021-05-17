@@ -5,13 +5,13 @@ import cn.tucci.management.core.response.PageResult;
 import cn.tucci.management.core.response.Result;
 import cn.tucci.management.core.util.BCrypt;
 import cn.tucci.management.core.util.RootUtil;
-import cn.tucci.management.model.body.LockEditBody;
+import cn.tucci.management.model.body.UserLockBody;
 import cn.tucci.management.model.body.UserAddBody;
 import cn.tucci.management.model.body.UserEditBody;
 import cn.tucci.management.model.body.UserPwdEditBody;
 import cn.tucci.management.model.body.UserRoleEditBody;
 import cn.tucci.management.model.domain.sys.SysUser;
-import cn.tucci.management.model.query.UserQuery;
+import cn.tucci.management.model.query.SysUserQuery;
 import cn.tucci.management.service.sys.SysUserService;
 import cn.tucci.management.shiro.util.ShiroUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,7 +51,7 @@ public class SysUserController {
      */
     @RequiresPermissions(value = {"sys:user:list"})
     @GetMapping
-    public Result list(@Validated UserQuery query) {
+    public Result list(@Validated SysUserQuery query) {
         Page<SysUser> page = sysUserService.list(query);
         return PageResult.ok(page.getRecords(), page.getTotal());
     }
@@ -108,7 +108,7 @@ public class SysUserController {
     @Log("修改用户锁定状态")
     @RequiresPermissions(value = {"sys:user:editLock"})
     @PutMapping("edit_lock")
-    public Result editLock(@Validated @RequestBody LockEditBody body) {
+    public Result editLock(@Validated @RequestBody UserLockBody body) {
         RootUtil.notEditRoot(body.getUid());
 
         SysUser user = new SysUser()

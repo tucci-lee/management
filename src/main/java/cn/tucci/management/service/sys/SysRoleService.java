@@ -1,7 +1,7 @@
 package cn.tucci.management.service.sys;
 
 import cn.tucci.management.model.domain.sys.SysRole;
-import cn.tucci.management.model.query.RoleQuery;
+import cn.tucci.management.model.query.SysRoleQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public interface SysRoleService {
      * @param query query
      * @return roleList
      */
-    Page<SysRole> list(RoleQuery query);
+    Page<SysRole> list(SysRoleQuery query);
 
     /**
      * 添加role，添加角色关联的资源

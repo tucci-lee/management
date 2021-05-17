@@ -6,7 +6,7 @@ import cn.tucci.management.model.dao.sys.SysRoleMapper;
 import cn.tucci.management.model.dao.sys.SysRoleResMapper;
 import cn.tucci.management.model.domain.sys.SysRole;
 import cn.tucci.management.model.domain.sys.SysRoleRes;
-import cn.tucci.management.model.query.RoleQuery;
+import cn.tucci.management.model.query.SysRoleQuery;
 import cn.tucci.management.service.sys.SysRoleService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -43,7 +43,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public Page<SysRole> list(RoleQuery query) {
+    public Page<SysRole> list(SysRoleQuery query) {
         // 分页+排序
         Page<SysRole> page = new Page<SysRole>()
                 .setCurrent(query.getPageNum())

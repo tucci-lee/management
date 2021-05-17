@@ -1,7 +1,7 @@
 package cn.tucci.management.service.sys;
 
 import cn.tucci.management.model.domain.sys.SysUser;
-import cn.tucci.management.model.query.UserQuery;
+import cn.tucci.management.model.query.SysUserQuery;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -25,7 +25,7 @@ public interface SysUserService {
      * @param query query
      * @return SysUserList
      */
-    Page<SysUser> list(UserQuery query);
+    Page<SysUser> list(SysUserQuery query);
 
     /**
      * 根据uid修改用户信息

@@ -9,11 +9,11 @@
         <result column="creator" property="creator" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="BIGINT"/>
         <result column="updater" property="updater" jdbcType="BIGINT"/>
-        <result column="update_time" property="updateTime" jdbcType="BIGINT"/>
+        <result column="updated_time" property="updatedTime" jdbcType="BIGINT"/>
         <result column="is_deleted" property="isDeleted" jdbcType="BIT"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, role_char, name, remarks, creator, create_time, updater, update_time, is_deleted
+    id, role_char, name, remarks, creator, create_time, updater, updated_time, is_deleted
   </sql>
 
     <select id="listRoleCharByUid" parameterType="long" resultType="string">
@@ -33,7 +33,7 @@ WHERE
 
     <select id="selectPage" resultMap="BaseResultMap">
         SELECT
-        id, role_char, name, remarks, creator, create_time, updater, update_time
+        id, role_char, name, remarks, creator, create_time, updater, updated_time
         FROM
         sys_role
         WHERE

@@ -6,7 +6,7 @@ import cn.tucci.management.model.dao.sys.SysUserMapper;
 import cn.tucci.management.model.dao.sys.SysUserRoleMapper;
 import cn.tucci.management.model.domain.sys.SysUser;
 import cn.tucci.management.model.domain.sys.SysUserRole;
-import cn.tucci.management.model.query.UserQuery;
+import cn.tucci.management.model.query.SysUserQuery;
 import cn.tucci.management.service.sys.SysUserService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -41,7 +41,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public Page<SysUser> list(UserQuery query) {
+    public Page<SysUser> list(SysUserQuery query) {
         // 分页+排序
         Page<SysUser> page = new Page<SysUser>()
                 .setCurrent(query.getPageNum())

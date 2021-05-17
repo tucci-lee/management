@@ -5,21 +5,16 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- *
+ * @author tucci.lee
  */
 @Data
-public class UserQuery {
+public class TaskRunLogQuery {
 
-    private String account;
-
-    private String phone;
-
-    private Boolean isLock;
-
-    private Long deptId;
+    @NotNull(message = "非法请求")
+    private Long taskId;
 
     @NotNull(message = "分页条件不能为空")
-    private Long pageNum;
+    private Integer pageNum;
 
     @NotNull(message = "非法请求")
     private Boolean asc;
