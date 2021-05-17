@@ -60,13 +60,13 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SecurityManager securityManager(AccountRealm accountRealm) {
+    public SecurityManager securityManager(RememberMeManager rememberMeManager, AccountRealm accountRealm) {
         List<Realm> realms = new ArrayList<>();
         realms.add(accountRealm);
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealms(realms);
-        securityManager.setRememberMeManager(rememberMeManager());
+        securityManager.setRememberMeManager(rememberMeManager);
 
         // session配置
         DefaultSessionManager sessionManager = new DefaultWebSessionManager();
@@ -82,6 +82,7 @@ public class ShiroConfig {
      *
      * @return RememberMeManager
      */
+    @Bean
     public RememberMeManager rememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         /*
