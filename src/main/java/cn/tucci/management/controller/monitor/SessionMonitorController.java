@@ -1,4 +1,4 @@
-package cn.tucci.management.controller.sys;
+package cn.tucci.management.controller.monitor;
 
 import cn.tucci.management.core.response.PageResult;
 import cn.tucci.management.core.response.Result;

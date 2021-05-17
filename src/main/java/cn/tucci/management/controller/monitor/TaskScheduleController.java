@@ -1,8 +1,9 @@
-package cn.tucci.management.controller.task;
+package cn.tucci.management.controller.monitor;
 
 import cn.tucci.management.core.annotation.Log;
 import cn.tucci.management.core.response.PageResult;
 import cn.tucci.management.core.response.Result;
+import cn.tucci.management.core.util.TestUtil;
 import cn.tucci.management.model.body.TaskScheduleAddBody;
 import cn.tucci.management.model.body.TaskScheduleEditBody;
 import cn.tucci.management.model.body.TaskScheduleEditStatusBody;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author tucci.lee
  */
 @RestController
-@RequestMapping("/task/schedule")
+@RequestMapping("/monitor/task")
 public class TaskScheduleController {
 
     private final TaskScheduleService taskScheduleService;
@@ -55,7 +56,7 @@ public class TaskScheduleController {
      * @param query query
      * @return Result
      */
-    @RequiresPermissions(value = {"task:schedule:list"})
+    @RequiresPermissions(value = {"monitor:task:list"})
     @GetMapping
     public Result list(@Validated TaskScheduleQuery query) {
         Page<TaskScheduleDTO> page = taskScheduleService.list(query);
@@ -68,7 +69,7 @@ public class TaskScheduleController {
      * @param body body
      * @return Result
      */
-    @RequiresPermissions(value = {"task:schedule:add"})
+    @RequiresPermissions(value = {"monitor:task:add"})
     @Log("添加定时任务")
     @PostMapping
     public Result add(@Validated @RequestBody TaskScheduleAddBody body) {
@@ -86,7 +87,7 @@ public class TaskScheduleController {
      * @param body body
      * @return Result
      */
-    @RequiresPermissions(value = {"task:schedule:edit"})
+    @RequiresPermissions(value = {"monitor:task:edit"})
     @Log("修改定时任务")
     @PutMapping
     public Result edit(@Validated @RequestBody TaskScheduleEditBody body) {
@@ -104,7 +105,7 @@ public class TaskScheduleController {
      * @param id id
      * @return Reuslt
      */
-    @RequiresPermissions(value = {"task:schedule:delete"})
+    @RequiresPermissions(value = {"monitor:task:delete"})
     @Log("删除定时任务")
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Long id) {
@@ -117,7 +118,7 @@ public class TaskScheduleController {
     }
 
 
-    @RequiresPermissions(value = {"task:schedule:editStatus"})
+    @RequiresPermissions(value = {"monitor:task:editStatus"})
     @Log("编辑定时任务状态")
     @PutMapping("edit_status")
     public Result editStatus(@Validated @RequestBody TaskScheduleEditStatusBody body) {
@@ -132,7 +133,7 @@ public class TaskScheduleController {
      * @param query query
      * @return Result
      */
-    @RequiresPermissions(value = {"task:schedule:list"})
+    @RequiresPermissions(value = {"monitor:task:list"})
     @GetMapping("/start/log")
     public Result startLog(@Validated TaskStartLogQuery query) {
         Page<TaskStartLogDTO> page = taskStartLogService.list(query);
@@ -144,7 +145,7 @@ public class TaskScheduleController {
      * @param query query
      * @return Result
      */
-    @RequiresPermissions(value = {"task:schedule:list"})
+    @RequiresPermissions(value = {"monitor:task:list"})
     @GetMapping("/run/log")
     public Result runLog(@Validated TaskRunLogQuery query) {
         Page<TaskRunLog> page = taskRunLogService.list(query);
