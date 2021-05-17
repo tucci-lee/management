@@ -1,6 +1,6 @@
 package cn.tucci.management.model.dto;
 
-import cn.tucci.management.model.domain.task.TaskSchedule;
+import cn.tucci.management.model.domain.monitor.TaskSchedule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

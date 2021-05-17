@@ -47,10 +47,10 @@ INSERT INTO `sys_dept` VALUES (156084981477670913, '前端', 112963130878853120,
 COMMIT;
 
 -- ----------------------------
--- Table structure for sys_login_log
+-- Table structure for log_login
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_login_log`;
-CREATE TABLE `sys_login_log` (
+DROP TABLE IF EXISTS `log_login`;
+CREATE TABLE `log_login` (
   `id` bigint(20) NOT NULL,
   `account` varchar(10) NOT NULL COMMENT '登录账号',
   `os` varchar(20) NOT NULL COMMENT '操作系统',
@@ -63,16 +63,16 @@ CREATE TABLE `sys_login_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='登录日志';
 
 -- ----------------------------
--- Records of sys_login_log
+-- Records of log_login
 -- ----------------------------
 BEGIN;
 COMMIT;
 
 -- ----------------------------
--- Table structure for sys_operation_log
+-- Table structure for log_operation
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_operation_log`;
-CREATE TABLE `sys_operation_log` (
+DROP TABLE IF EXISTS `log_operation`;
+CREATE TABLE `log_operation` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(20) NOT NULL COMMENT '操作人id',
   `account` varchar(10) NOT NULL COMMENT '操作人账号',
@@ -90,7 +90,7 @@ CREATE TABLE `sys_operation_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
--- Records of sys_operation_log
+-- Records of log_operation
 -- ----------------------------
 BEGIN;
 COMMIT;

@@ -2,9 +2,9 @@ package cn.tucci.management.core.aspect;
 
 import cn.tucci.management.core.annotation.Log;
 import cn.tucci.management.core.util.WebUtil;
-import cn.tucci.management.model.domain.sys.SysOperationLog;
+import cn.tucci.management.model.domain.log.LogOperation;
 import cn.tucci.management.model.domain.sys.SysUser;
-import cn.tucci.management.service.sys.SysOperationLogService;
+import cn.tucci.management.service.log.LogOperationService;
 import cn.tucci.management.shiro.util.ShiroUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -24,12 +24,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAspect {
     private final SimpleAsyncTaskExecutor simpleAsyncTaskExecutor;
-    private final SysOperationLogService sysOperationLogService;
+    private final LogOperationService logOperationService;
 
     @Autowired
-    public LogAspect(SimpleAsyncTaskExecutor simpleAsyncTaskExecutor, SysOperationLogService sysOperationLogService) {
+    public LogAspect(SimpleAsyncTaskExecutor simpleAsyncTaskExecutor, LogOperationService logOperationService) {
         this.simpleAsyncTaskExecutor = simpleAsyncTaskExecutor;
-        this.sysOperationLogService = sysOperationLogService;
+        this.logOperationService = logOperationService;
     }
 
     @Pointcut("@annotation(log)")
@@ -54,7 +54,7 @@ public class LogAspect {
             params = JSON.toJSONString(args[0]);
         }
 
-        SysOperationLog operationLog = new SysOperationLog()
+        LogOperation operationLog = new LogOperation()
                 .setUid(user.getUid())
                 .setAccount(user.getAccount())
                 .setIp(ip)
@@ -80,9 +80,9 @@ public class LogAspect {
      * @param errMsg
      * @param status
      */
-    private void add(SysOperationLog operationLog, String result, String errMsg, boolean status) {
+    private void add(LogOperation operationLog, String result, String errMsg, boolean status) {
         operationLog.setResult(result).setStatus(status)
                 .setErrMsg(errMsg);
-        simpleAsyncTaskExecutor.execute(() -> sysOperationLogService.add(operationLog));
+        simpleAsyncTaskExecutor.execute(() -> logOperationService.add(operationLog));
     }
 }

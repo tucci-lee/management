@@ -1,6 +1,6 @@
 package cn.tucci.management.model.dto;
 
-import cn.tucci.management.model.domain.task.TaskStartLog;
+import cn.tucci.management.model.domain.monitor.TaskStartLog;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

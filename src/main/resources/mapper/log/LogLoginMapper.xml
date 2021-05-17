@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tucci.management.model.dao.log.LogLoginMapper" >
+  <resultMap id="BaseResultMap" type="cn.tucci.management.model.domain.log.LogLogin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="os" property="os" jdbcType="VARCHAR" />
+    <result column="browser" property="browser" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, account, os, browser, ip, create_time, status, msg
+  </sql>
+
+  <select id="selectPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    sys_login_log
+    <where>
+      <if test="query.account != null and query.account != ''">
+        account = #{query.account}
+      </if>
+      <if test="query.ip != null and query.ip != ''">
+        AND ip = #{query.ip}
+      </if>
+      <if test="query.status != null">
+        AND `status` = #{query.status}
+      </if>
+      <if test="query.beginTime != null">
+        AND create_time &gt;= #{query.beginTime}
+      </if>
+      <if test="query.endTime != null">
+        AND create_time &lt;= #{query.endTime}
+      </if>
+    </where>
+  </select>
+</mapper>

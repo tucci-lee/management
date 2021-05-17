@@ -1,6 +1,6 @@
 package cn.tucci.management.config;
 
-import cn.tucci.management.service.task.TaskScheduleService;
+import cn.tucci.management.service.monitor.TaskScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

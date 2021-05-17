@@ -1,7 +1,7 @@
 package cn.tucci.management.core.task;
 
-import cn.tucci.management.model.dao.task.TaskRunLogMapper;
-import cn.tucci.management.model.domain.task.TaskRunLog;
+import cn.tucci.management.model.dao.monitor.TaskRunLogMapper;
+import cn.tucci.management.model.domain.monitor.TaskRunLog;
 
 /**
  * @author tucci.lee

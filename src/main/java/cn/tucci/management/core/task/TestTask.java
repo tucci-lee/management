@@ -1,6 +1,6 @@
 package cn.tucci.management.core.task;
 
-import cn.tucci.management.model.dao.task.TaskRunLogMapper;
+import cn.tucci.management.model.dao.monitor.TaskRunLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

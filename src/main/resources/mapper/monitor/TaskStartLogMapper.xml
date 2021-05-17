@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.tucci.management.model.dao.monitor.TaskStartLogMapper" >
+  <resultMap id="BaseResultMap" type="cn.tucci.management.model.domain.monitor.TaskStartLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="task_schedule_id" property="taskScheduleId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="BIT"/>
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="DTOResultMap" type="cn.tucci.management.model.dto.TaskStartLogDTO" extends="BaseResultMap">
+    <result column="account" property="account" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, task_schedule_id, status, msg, creator, create_time
+  </sql>
+    <select id="selectList" resultMap="DTOResultMap">
+SELECT
+	s1.id,
+	s1.`status`,
+	s1.msg,
+	s1.create_time,
+	s2.account
+FROM
+	task_start_log s1
+	LEFT JOIN sys_user s2 ON s1.creator = s2.uid
+WHERE
+    s1.task_schedule_id = #{query.taskId}
+    </select>
+</mapper>
