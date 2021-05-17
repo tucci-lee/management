@@ -21,9 +21,11 @@ SELECT
 	s1.`status`,
 	s1.msg,
 	s1.create_time,
-	IFNULL( s2.account, '系统' ) as account
+	s2.account
 FROM
 	task_start_log s1
 	LEFT JOIN sys_user s2 ON s1.creator = s2.uid
+WHERE
+    s1.task_schedule_id = #{query.taskId}
     </select>
 </mapper>

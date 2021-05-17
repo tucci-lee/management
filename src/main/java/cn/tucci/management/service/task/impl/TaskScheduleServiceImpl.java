@@ -50,7 +50,9 @@ public class TaskScheduleServiceImpl implements TaskScheduleService {
                 .eq(TaskSchedule::getType, TaskSchedule.Type.SYS)
                 .eq(TaskSchedule::getIsDeleted, Boolean.FALSE);
         List<TaskSchedule> taskSchedules = taskScheduleMapper.selectList(wrapper);
-        this.startTask(0L, taskSchedules.toArray(new TaskSchedule[1]));
+        if (taskSchedules != null && !taskSchedules.isEmpty()) {
+            this.startTask(0L, taskSchedules.toArray(new TaskSchedule[1]));
+        }
     }
 
     @Override
